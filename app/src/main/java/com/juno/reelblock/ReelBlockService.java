@@ -2,18 +2,23 @@ package com.juno.reelblock;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.List;
 
 /**
- * Watches the foreground app. When Instagram Reels or YouTube Shorts PLAYER
- * is detected, backs out and shows the BlockActivity screen.
+ * Watches the foreground app. When an Instagram Reels or YouTube Shorts PLAYER
+ * is detected — from ANY entry point (bottom tabs, home feed, DMs, shared
+ * links, notifications) — backs out and shows the BlockActivity screen.
  *
- * IMPORTANT: the home feeds also contain reels/shorts strips, so view-level
- * checks must target the fullscreen PLAYER only — never the feed/shelf.
+ * Detection targets the fullscreen PLAYER only: home feeds also contain
+ * reels/shorts strips, so feed/shelf/carousel/thumbnail views are excluded
+ * and small (non-fullscreen) matches are ignored.
  */
 public class ReelBlockService extends AccessibilityService {
 
@@ -100,6 +105,9 @@ public class ReelBlockService extends AccessibilityService {
             for (AccessibilityNodeInfo n : reelsTabs) {
                 if (n.isSelected()) return true;
             }
+            // Fullscreen clips viewer: catches reels opened from DMs, shared
+            // links and notifications (no tab is selected there).
+            if (hasFullscreenClipsViewer(root, 0)) return true;
             return false;
         } finally {
             root.recycle();
@@ -128,7 +136,10 @@ public class ReelBlockService extends AccessibilityService {
             }
             // 3. Player-container view IDs (excludes home shelf).
             if (hasPlayerViewId(root)) return true;
-            // 4. Player chrome descriptions.
+            // 4. Fullscreen shorts/reel player: catches players opened from the
+            //    home feed, shared links and notifications.
+            if (hasFullscreenShortsPlayer(root, 0)) return true;
+            // 5. Player chrome descriptions.
             if (hasAnyText(root, "Shorts player")) return true;
             if (hasContentDescFragment(root, "shorts player")) return true;
             if (hasContentDescFragment(root, "reel player")) return true;
@@ -136,6 +147,82 @@ public class ReelBlockService extends AccessibilityService {
         } finally {
             root.recycle();
         }
+    }
+
+    /** Fullscreen Instagram clips viewer (DM / shared-link / notification opens). */
+    private boolean hasFullscreenClipsViewer(AccessibilityNodeInfo node, int depth) {
+        if (node == null || depth > 8) return false;
+        if (isClipsViewerNode(node) && isFullscreen(node)) return true;
+        int count = node.getChildCount();
+        for (int i = 0; i < count; i++) {
+            AccessibilityNodeInfo child = node.getChild(i);
+            boolean hit = hasFullscreenClipsViewer(child, depth + 1);
+            if (child != null) child.recycle();
+            if (hit) return true;
+        }
+        return false;
+    }
+
+    private boolean isClipsViewerNode(AccessibilityNodeInfo node) {
+        String both = nodeClassAndId(node);
+        if (!both.contains("clips")) return false;
+        // Not the composer/camera, not feed strips.
+        if (both.contains("create") || both.contains("composer")
+                || both.contains("camera") || both.contains("capture")) return false;
+        if (both.contains("shelf") || both.contains("carousel")
+                || both.contains("feed") || both.contains("thumbnail")
+                || both.contains("suggested")) return false;
+        return true;
+    }
+
+    /** Fullscreen YouTube Shorts player (home feed / shared-link / notification opens). */
+    private boolean hasFullscreenShortsPlayer(AccessibilityNodeInfo node, int depth) {
+        if (node == null || depth > 8) return false;
+        if (isShortsPlayerNode(node) && isFullscreen(node)) return true;
+        int count = node.getChildCount();
+        for (int i = 0; i < count; i++) {
+            AccessibilityNodeInfo child = node.getChild(i);
+            boolean hit = hasFullscreenShortsPlayer(child, depth + 1);
+            if (child != null) child.recycle();
+            if (hit) return true;
+        }
+        return false;
+    }
+
+    private boolean isShortsPlayerNode(AccessibilityNodeInfo node) {
+        String both = nodeClassAndId(node);
+        if (!both.contains("reel") && !both.contains("shorts")) return false;
+        if (both.contains("shelf") || both.contains("carousel")
+                || both.contains("feed") || both.contains("item")
+                || both.contains("thumbnail") || both.contains("chip")) return false;
+        if (both.contains("create") || both.contains("camera")
+                || both.contains("capture") || both.contains("upload")) return false;
+        return true;
+    }
+
+    private String nodeClassAndId(AccessibilityNodeInfo node) {
+        String cls = "";
+        CharSequence c = node.getClassName();
+        if (c != null) cls = c.toString().toLowerCase();
+        String id = "";
+        CharSequence vid = node.getViewIdResourceName();
+        if (vid != null) id = vid.toString().toLowerCase();
+        return cls + " " + id;
+    }
+
+    /**
+     * True if the node covers most of the screen — a fullscreen player,
+     * not a feed thumbnail or shelf strip.
+     */
+    private boolean isFullscreen(AccessibilityNodeInfo node) {
+        Rect bounds = new Rect();
+        node.getBoundsInScreen(bounds);
+        if (bounds.isEmpty()) return false;
+        DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+        long screenArea = (long) dm.widthPixels * dm.heightPixels;
+        if (screenArea <= 0) return false;
+        long nodeArea = (long) bounds.width() * bounds.height();
+        return nodeArea >= screenArea * 7 / 10;
     }
 
     /** True if the event's window class name contains any of the fragments. */
@@ -151,7 +238,7 @@ public class ReelBlockService extends AccessibilityService {
 
     /**
      * Matches player/watch/fragment/container view IDs containing reel/shorts,
-     * but explicitly excludes shelf/carousel/feed/item/thumbnail (home feed).
+     * but explicitly excludes shelf/carousel/feed/item/thumbnail/chip (home feed).
      */
     private boolean hasPlayerViewId(AccessibilityNodeInfo root) {
         return walkForPlayerId(root, 0);
