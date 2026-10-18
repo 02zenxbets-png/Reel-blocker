@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Reel Blocker</string>
+    <string name="accessibility_description">Reels aur Shorts detect karke block karne ke liye chahiye.</string>
+</resources>

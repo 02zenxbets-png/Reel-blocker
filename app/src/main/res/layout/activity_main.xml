@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_dark">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Blue header card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/header_blue"
+                android:padding="20dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reel Blocker"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/bg_dark"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Service OFF hai"
+                    android:textSize="14sp"
+                    android:textColor="@color/text"
+                    android:background="@drawable/pill_dark"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp" />
+            </LinearLayout>
+
+            <!-- PAGE: Blocking -->
+            <LinearLayout
+                android:id="@+id/page_blocking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_dark"
+                    android:padding="18dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Blocking"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Instagram Reels block karo"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_soft" />
+                    <Switch
+                        android:id="@+id/sw_reels"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Reels Blocker"
+                        android:textColor="@color/text"
+                        android:layout_marginBottom="10dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="YouTube Shorts block karo"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_soft" />
+                    <Switch
+                        android:id="@+id/sw_shorts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Shorts Blocker"
+                        android:textColor="@color/text"
+                        android:layout_marginBottom="10dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No Mercy Mode (hamesha block, wapas ka option nahi)"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_soft" />
+                    <Switch
+                        android:id="@+id/sw_strict"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Strict Block ON"
+                        android:textColor="@color/text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_dark"
+                    android:padding="18dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_delay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Rokne ka time: 10 second"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text"
+                        android:layout_marginBottom="4dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Strict mode OFF hone par lagta hai"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_soft"
+                        android:layout_marginBottom="8dp" />
+                    <SeekBar
+                        android:id="@+id/sb_delay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_enable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Accessibility Service ON karo"
+                    android:textColor="@color/bg_dark"
+                    android:textStyle="bold"
+                    android:background="@drawable/btn_blue"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Note: Button dabane ke baad Accessibility settings me 'Reel Blocker' ko ON karna hoga. Tabhi app Reels/Shorts detect karke rok payegi."
+                    android:textSize="13sp"
+                    android:textColor="@color/text_soft"
+                    android:layout_marginBottom="16dp" />
+            </LinearLayout>
+
+            <!-- PAGE: Study timer -->
+            <LinearLayout
+                android:id="@+id/page_study"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_dark"
+                    android:padding="18dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Study Timer"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/tv_timer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="25:00"
+                        android:textSize="56sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue"
+                        android:gravity="center"
+                        android:layout_marginBottom="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginBottom="12dp">
+
+                        <Button
+                            android:id="@+id/btn_t15"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="15m"
+                            android:textColor="@color/text"
+                            android:background="@drawable/btn_ghost" />
+                        <Button
+                            android:id="@+id/btn_t25"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="25m"
+                            android:textColor="@color/text"
+                            android:background="@drawable/btn_ghost" />
+                        <Button
+                            android:id="@+id/btn_t45"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="45m"
+                            android:textColor="@color/text"
+                            android:background="@drawable/btn_ghost" />
+                        <Button
+                            android:id="@+id/btn_t60"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="60m"
+                            android:textColor="@color/text"
+                            android:background="@drawable/btn_ghost" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_timer_start"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            android:text="Start"
+                            android:textStyle="bold"
+                            android:textColor="@color/bg_dark"
+                            android:background="@drawable/btn_blue" />
+                        <Button
+                            android:id="@+id/btn_timer_reset"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Reset"
+                            android:textColor="@color/text"
+                            android:background="@drawable/btn_ghost" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_timer_msg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Padhai shuru karo, bhai!"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_soft"
+                        android:gravity="center"
+                        android:layout_marginTop="10dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- PAGE: Reel counter -->
+            <LinearLayout
+                android:id="@+id/page_counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_dark"
+                    android:padding="18dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Reel Counter"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text"
+                        android:layout_marginBottom="16dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="BLOCKED"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_soft"
+                        android:gravity="center" />
+                    <TextView
+                        android:id="@+id/tv_blocked_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="52sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/blue"
+                        android:gravity="center"
+                        android:layout_marginBottom="16dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Kitne reels/shorts block hue"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_soft"
+                        android:gravity="center"
+                        android:layout_marginBottom="20dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="WATCHED (UNBLOCKED)"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_soft"
+                        android:gravity="center" />
+                    <TextView
+                        android:id="@+id/tv_watched_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="52sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text"
+                        android:gravity="center"
+                        android:layout_marginBottom="16dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Blocking OFF thi to kitne reels/shorts dekhe gaye"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_soft"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_reset_counters"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Counter Reset karo"
+                    android:textColor="@color/text"
+                    android:background="@drawable/btn_ghost"
+                    android:layout_marginBottom="16dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom tab bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/tabbar_bg"
+        android:padding="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btn_tab_blocking"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="Blocking"
+            android:textStyle="bold"
+            android:textColor="@color/bg_dark"
+            android:background="@drawable/btn_blue" />
+        <Button
+            android:id="@+id/btn_tab_study"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="Study"
+            android:textColor="@color/text_soft"
+            android:background="@drawable/btn_ghost" />
+        <Button
+            android:id="@+id/btn_tab_counter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Counter"
+            android:textColor="@color/text_soft"
+            android:background="@drawable/btn_ghost" />
+    </LinearLayout>
+
+</LinearLayout>
